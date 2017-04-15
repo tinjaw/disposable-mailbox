@@ -13,12 +13,15 @@ error_reporting(E_ALL);
 // header("Access-Control-Allow-Origin: *");
 
 // Change IMAP settings (check SSL flags on http://php.net/manual/en/function.imap-open.php)
-$config['imap']['url'] = '{example.com/imap/ssl}INBOX';
+$config['imap']['url'] = '{mail.example.com/imap/ssl}INBOX';
 $config['imap']['username'] = "test";
 $config['imap']['password'] = "test";
 
-// email domain, usually different from imap hostname:
-$config['mailHostname'] = "example.com";
-
 // When to delete old messages?
 $config['delete_messages_older_than'] = '30 days ago';
+
+// PUBLIC CONFIG - everything in $config['public'] is visible to everyone!
+
+// array of domains that the users can use.
+$config['public']['domains'] = array("example.com", "other.example.org");
+

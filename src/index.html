@@ -20,7 +20,7 @@
     <header>
         <div class="container">
 
-            <form ng-submit="$ctrl.updateUsername($ctrl.inputFieldUsername)">
+            <form ng-submit="$ctrl.updateAddress($ctrl.inputFieldAddress)">
 
                 <small id="emailHelp" class="form-text text-muted">
                     You have <span class="tag tag-pill tag-default">{{$ctrl.mails.length}}</span> mails in your
@@ -30,8 +30,8 @@
                 <div class="form-group row">
                     <div class="col-sm-8">
 
-                        <input id="inputFieldUsername" ng-model="$ctrl.inputFieldUsername"
-                               placeholder="new username"
+                        <input id="inputFieldAddress" ng-model="$ctrl.inputFieldAddress"
+                               placeholder="new address"
                                type="text" class="form-control form-control-lg" onclick="this.select()"/>
                     </div>
                     <div class="col-sm-2">
@@ -56,7 +56,7 @@
                     browser and your php error logs. </p>
             </div>
 
-            <div ng-if="$ctrl.username && $ctrl.mails.length == 0">
+            <div ng-if="$ctrl.address && $ctrl.mails.length == 0">
                 <div class="card waiting-screen">
                     <div class="card-block">
                         <p class="lead">Your mailbox <strong>{{$ctrl.address}}</strong> is ready. </p>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="$ctrl.username" ng-repeat="mail in $ctrl.mails | orderBy:'-date' track by $index"
+            <div ng-if="$ctrl.address" ng-repeat="mail in $ctrl.mails | orderBy:'-date' track by $index"
                  class="email-table">
 
                 <div class="card email">
@@ -92,7 +92,7 @@
                                     </button>
 
                                     <a role="button" class="btn btn-sm btn-outline-primary "
-                                       href="{{$ctrl.backend_url}}?download_email_id={{mail.id}}&username={{$ctrl.username}}"
+                                       href="{{$ctrl.backend_url}}?download_email_id={{mail.id}}&address={{$ctrl.address}}"
                                        download="true">Download
                                     </a>
 
@@ -139,7 +139,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/autolinker/1.2.0/Autolinker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.4/chance.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.6/chance.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/1.1.4/stickyfill.min.js"></script>
 <script src="client-libs/angular-stickyfill-0.1.0/angular-stickyfill.js"></script>
 <script src="client-libs/index.js"></script>

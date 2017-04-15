@@ -22,10 +22,10 @@ function error($status, $text) {
 
 /**
  * print all mails for the given $user.
- * @param $username string username
  * @param $address string email address
  */
-function print_emails($username, $address) {
+function print_emails($address)
+{
     global $mailbox;
 
     // Search for mails with the recipient $address in TO or CC.
@@ -35,16 +35,16 @@ function print_emails($username, $address) {
 
     $emails = _load_emails($mail_ids, $address);
     header('Content-type: application/json');
-    print(json_encode(array("mails" => $emails, 'username' => $username, 'address' => $address)));
+    print(json_encode(array("mails" => $emails, 'address' => $address)));
 }
 
 
 /**
- * deletes emails by id and username. The $address must match the recipient in the email.
+ * deletes emails by id and address. The $address must match the recipient in the email.
  *
  * @param $mailid integer imap email id
  * @param $address string email address
- * @internal param the $username matching username
+ * @internal
  */
 function delete_email($mailid, $address) {
     global $mailbox;
@@ -55,16 +55,16 @@ function delete_email($mailid, $address) {
         header('Content-type: application/json');
         print(json_encode(array("success" => true)));
     } else {
-        error(404, 'delete error: invalid username/mailid combination');
+        error(404, 'delete error: invalid address/mailid combination');
     }
 }
 
 /**
- * download email by id and username. The $address must match the recipient in the email.
+ * download email by id and address. The $address must match the recipient in the email.
  *
  * @param $mailid integer imap email id
  * @param $address string email address
- * @internal param the $username matching username
+ * @internal
  */
 
 function download_email($mailid, $address) {
@@ -78,7 +78,7 @@ function download_email($mailid, $address) {
         $body = imap_body($mailbox->getImapStream(), $mailid, FT_UID);
         print ($headers . "\n" . $body);
     } else {
-        error(404, 'download error: invalid username/mailid combination');
+        error(404, 'download error: invalid address/mailid combination');
     }
 }
 
@@ -116,15 +116,27 @@ function _load_emails($mail_ids, $address) {
 }
 
 /**
- * Remove illegal characters from username and remove everything after the @-sign. You may extend it if your server supports them.
- * @param $username
- * @return string clean username
+ * Remove illegal characters from address. You may extend it if your server supports them.
+ * @param $address
+ * @return string clean address
  */
-function _clean_username($username) {
-    $username = strtolower($username);
-    $username = preg_replace('/@.*$/', "", $username);   // remove part after @
-    return preg_replace('/[^A-Za-z0-9_.+-]/', "", $username);   // remove special characters
+function _clean_address($address)
+{
+    $address = strtolower($address);
+    return preg_replace('/[^A-Za-z0-9_.+-@]/', "", $address);   // remove special characters
 }
+
+/**
+ * Return true if and only if address is valid.
+ * @param $address
+ * @return string clean address
+ */
+function _valid_address($address)
+{
+    return strlen($address) > 0 && strpos($address, "@") !== false;
+}
+
+
 
 /**
  * deletes messages older than X days.
@@ -144,13 +156,12 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-if (isset($_GET['username'])) {
+if (isset($_GET['address'])) {
     // perform common validation:
-    $username = _clean_username($_GET['username']);
-    if (strlen($username) === 0) {
-        error(400, 'invalid username');
+    $address = _clean_address($_GET['address']);
+    if (!_valid_address($address)) {
+        error(400, 'invalid address');
     }
-    $address = $username . "@" . $config['mailHostname'];
 
     // simple router:
     if (isset($_GET['download_email_id'])) {
@@ -158,8 +169,10 @@ if (isset($_GET['username'])) {
     } else if (isset($_GET['delete_email_id'])) {
         delete_email($_GET['delete_email_id'], $address);
     } else {
-        print_emails($username, $address);
+        print_emails($address);
     }
+} elseif (isset($_GET['get_config'])) {
+    print(json_encode(array("config" => $config['public'])));
 } else {
     error(400, 'invalid action');
 }

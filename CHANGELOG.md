@@ -6,6 +6,12 @@ and this project does not adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Support for multiple domains
+
+### Changed
+- Username in URL now contains full email address with domain
+
 ## [0.1.4] - 2017-04-15
 
 ### Changed
