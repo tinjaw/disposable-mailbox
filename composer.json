@@ -1,8 +1,12 @@
 {
-    "require": {
-        "php-imap/php-imap": "~2.0"
-    },
-    "config": {
-        "vendor-dir": "src/backend-libs"
-    }
+  "require": {
+    "php-imap/php-imap": "*",
+    "php": "^7.2",
+    "gnugat/PronounceableWord": "*",
+    "ezyang/htmlpurifier": "^4.9",
+    "fightbulc/moment": "*"
+  },
+  "config": {
+    "vendor-dir": "src/vendor"
+  }
 }
